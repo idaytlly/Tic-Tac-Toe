@@ -12,29 +12,55 @@ int main (){
 char empty[9]={' ',' ',' ',' ',' ',' ',' ',' ',' '};
 char player = 'X';
 char computer = 'O';
-bool running = true;
+int playerWins = 0;
+    int computerWins = 0;
+    int playerStreak = 0;
+    int computerStreak = 0;
+    bool running;
+    char continuePlaying;
 
-while (running){
-    playerTurn (empty, player);
-    drawGrid (empty);
-    if (findWinner (empty, player)){
-       running = false;
-        break;
-    } else if (findTie(empty)){
-        running = false;
-        break;
-    }
+    do {
+        running = true;
+        // Reset the grid for a new game
+        for (int i = 0; i < 9; i++) {
+            empty[i] = ' ';
+        }
 
-    computerTurn (empty, computer);
-    drawGrid (empty);
-    if (findWinner (empty, player)){
-        running = false;
-        break;
-    } else if (findTie(empty)){
-        running = false;
-        break;
-    }
-}
+        while (running) {
+            playerTurn (empty, player);
+            drawGrid (empty);
+            if (findWinner (empty, player)){
+                playerWins++;
+                playerStreak++;
+                computerStreak = 0;
+                running = false;
+                break;
+            } else if (findTie(empty)){
+                running = false;
+                break;
+            }
+
+            computerTurn (empty, computer);
+            drawGrid (empty);
+            if (findWinner (empty, computer)){
+                computerWins++;
+                computerStreak++;
+                playerStreak = 0;
+                running = false;
+                break;
+            } else if (findTie(empty)){
+                running = false;
+                break;
+            }
+        }
+
+        std::cout << "Player Wins: " << playerWins << " | Computer Wins: " << computerWins << '\n';
+        std::cout << "Player Streak: " << playerStreak << " | Computer Streak: " << computerStreak << '\n';
+        std::cout << "Do you want to continue? (Y/N): ";
+        cin >> continuePlaying;
+    } while (continuePlaying == 'Y' || continuePlaying == 'y');
+
+    std::cout << "Thank you for playing!";
     return 0;
 }
 void drawGrid ( char *empty){
@@ -76,19 +102,19 @@ void computerTurn (char *empty, char computer){
 
 bool findWinner (char *empty, char player){
     if ((empty[0] != ' ') && (empty[0] == empty[1]) && (empty[1] == empty [2])){
-        empty[0] == player ? std::cout << "YOU WIN!" : std::cout << "YOU LOSE!" ;
+        empty[0] == player ? std::cout << "YOU WIN!\n" : std::cout << "YOU LOSE!\n" ;
     }
     else if ((empty[3] != ' ') && (empty[3] == empty[4]) && (empty[4] == empty [5])){
-        empty[3] == player ? std::cout << "YOU WIN!" : std::cout << "YOU LOSE!";
+        empty[3] == player ? std::cout << "YOU WIN!\n" : std::cout << "YOU LOSE!\n";
     }
     else if ((empty[6] != ' ') && (empty[6] == empty[7]) && (empty[7] == empty [8])){
-        empty[6] == player ? std::cout << "YOU WIN!" : std::cout << "YOU LOSE!";
+        empty[6] == player ? std::cout << "YOU WIN!\n" : std::cout << "YOU LOSE!\n";
     }
     else if ((empty[0] != ' ') && (empty[0] == empty[4]) && (empty[4] == empty [8])){
-        empty[0] == player ? std::cout << "YOU WIN!" : std::cout << "YOU LOSE!";
+        empty[0] == player ? std::cout << "YOU WIN!\n" : std::cout << "YOU LOSE!\n";
     }
     else if ((empty[1] != ' ') && (empty[1] == empty[4]) && (empty[4] == empty [6])){
-        empty[1] == player ? std::cout << "YOU WIN!" : std::cout << "YOU LOSE!";
+        empty[1] == player ? std::cout << "YOU WIN!\n" : std::cout << "YOU LOSE!\n";
     }
     else {
         return false;
